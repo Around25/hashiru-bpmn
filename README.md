@@ -2,8 +2,7 @@
 
 The scope of this project is to create a bpmn2 execution engine that can scale on multiple node in an elixir cluster.
 
-
-
+[![Build Status](https://travis-ci.org/Around25/hashiru-bpmn.svg?branch=master)](https://travis-ci.org/Around25/hashiru-bpmn)
 
 ## Installation
 

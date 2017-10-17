@@ -14,41 +14,17 @@ defmodule Bpmn do
 
   Each node can be represented in Elixir as a token in the following format: {:bpmn_node_type, :any_data_type}
 
+  The nodes can return one of the following sets of data:
+  - {:ok, context} => The process has completed successfully and returned some data in the context
+  - {:error, _message, %{field: "Error message"}} => Error in the execution of the process with message and fields
+  - {:manual, _} => The process has reached an external manual activity
+  - {:fatal, _} => Fatal error in the execution of the process
+  - {:not_implemented} => Process reached an unimplemented section of the process-
+
   Events
   ------
 
-  ### Start Event
 
-  A BPMN start event can have the following BPMN contents:
-
-      <bpmn:startEvent id="StartEvent_1" name="START" camunda:initiator="HTTP">
-        <bpmn:outgoing>SequenceFlow_0u2ggjm</bpmn:outgoing>
-
-        <bpmn:extensionElements>
-          <camunda:formData>
-            <camunda:formField id="username" label="Username" type="string">
-              <camunda:validation>
-                <camunda:constraint name="username" config="required" />
-                <camunda:constraint name="password" config="required" />
-              </camunda:validation>
-            </camunda:formField>
-            <camunda:formField id="password" label="Password" type="string" />
-          </camunda:formData>
-          <camunda:executionListener class="bpmn.event.start.listener" event="start" />
-        </bpmn:extensionElements>
-      </bpmn:startEvent>
-
-  This node can be represented as the following Elixir token:
-
-      {:bpmn_event_start,
-        %{
-          id: "StartEvent_1",
-          name: "START",
-          outgoing: ["SequenceFlow_0u2ggjm"],
-          inputs: [%{"username"=>"user", "password"=>"password"}],
-          definitions: [{:error_event_definition, %{}}]
-        }
-      }
 
   ### End Event
 
@@ -76,7 +52,7 @@ defmodule Bpmn do
   @doc """
   Parse a string representation of a process into an executable process representation
   """
-  def parse(process) do
+  def parse(_process) do
     {:ok, %{"start_node_id" => {:bpmn_event_start, %{}}}}
   end
 
@@ -90,41 +66,55 @@ defmodule Bpmn do
   @doc """
   Release token to another target node
   """
-  def releaseToken(target, process, context) do
+  def releaseToken(targets, context) when is_list(targets) do
+    targets
+      |> Task.async_stream(&(releaseToken(&1, context)))
+      |> Enum.reduce({:ok, context}, &reduce_result/2)
+  end
+  def releaseToken(target, context) do
+    process = Bpmn.Context.get(context, :process)
     next = next(target, process)
     case next do
       nil -> {:error, "Unable to find node '#{target}'"}
-      _ -> execute(next, process, context)
+      _ -> execute(next, context)
     end
   end
 
   @doc """
   Execute a node in the process
   """
-  def execute({:bpmn_event_start, _}            = elem, process, context), do: Bpmn.Event.Start.tokenIn(elem, process, context)
-  def execute({:bpmn_event_end, _}              = elem, process, context), do: Bpmn.Event.End.tokenIn(elem, process, context)
-  def execute({:bpmn_event_intermediate, _}     = elem, process, context), do: Bpmn.Event.Intermediate.tokenIn(elem, process, context)
-  def execute({:bpmn_event_boundary, _}         = elem, process, context), do: Bpmn.Event.Boundary.tokenIn(elem, process, context)
+  def execute({:bpmn_event_start, _}            = elem, context), do: Bpmn.Event.Start.tokenIn(elem, context)
+  def execute({:bpmn_event_end, _}              = elem, context), do: Bpmn.Event.End.tokenIn(elem, context)
+  def execute({:bpmn_event_intermediate, _}     = elem, context), do: Bpmn.Event.Intermediate.tokenIn(elem, context)
+  def execute({:bpmn_event_boundary, _}         = elem, context), do: Bpmn.Event.Boundary.tokenIn(elem, context)
 
-  def execute({:bpmn_activity_task_user, _}     = elem, process, context), do: Bpmn.Activity.Task.User.tokenIn(elem, process, context)
-  def execute({:bpmn_activity_task_script, _}   = elem, process, context), do: Bpmn.Activity.Task.Script.tokenIn(elem, process, context)
-  def execute({:bpmn_activity_task_service, _}  = elem, process, context), do: Bpmn.Activity.Task.Service.tokenIn(elem, process, context)
-  def execute({:bpmn_activity_task_manual, _}   = elem, process, context), do: Bpmn.Activity.Task.Manual.tokenIn(elem, process, context)
-  def execute({:bpmn_activity_task_send, _}     = elem, process, context), do: Bpmn.Activity.Task.Send.tokenIn(elem, process, context)
-  def execute({:bpmn_activity_task_receive, _}  = elem, process, context), do: Bpmn.Activity.Task.Receive.tokenIn(elem, process, context)
+  def execute({:bpmn_activity_task_user, _}     = elem, context), do: Bpmn.Activity.Task.User.tokenIn(elem, context)
+  def execute({:bpmn_activity_task_script, _}   = elem, context), do: Bpmn.Activity.Task.Script.tokenIn(elem, context)
+  def execute({:bpmn_activity_task_service, _}  = elem, context), do: Bpmn.Activity.Task.Service.tokenIn(elem, context)
+  def execute({:bpmn_activity_task_manual, _}   = elem, context), do: Bpmn.Activity.Task.Manual.tokenIn(elem, context)
+  def execute({:bpmn_activity_task_send, _}     = elem, context), do: Bpmn.Activity.Task.Send.tokenIn(elem, context)
+  def execute({:bpmn_activity_task_receive, _}  = elem, context), do: Bpmn.Activity.Task.Receive.tokenIn(elem, context)
 
-  def execute({:bpmn_activity_subprocess, _}    = elem, process, context), do: Bpmn.Activity.Subprocess.tokenIn(elem, process, context)
-  def execute({:bpmn_activity_subprocess_embeded, _} = elem, process, context), do: Bpmn.Activity.Subprocess.Embedded.tokenIn(elem, process, context)
+  def execute({:bpmn_activity_subprocess, _}    = elem, context), do: Bpmn.Activity.Subprocess.tokenIn(elem, context)
+  def execute({:bpmn_activity_subprocess_embeded, _} = elem, context), do: Bpmn.Activity.Subprocess.Embedded.tokenIn(elem, context)
 
-  def execute({:bpmn_gateway_exclusive, _}      = elem, process, context), do: Bpmn.Gateway.Exclusive.tokenIn(elem, process, context)
-  def execute({:bpmn_gateway_exclusive_event, _} = elem, process, context), do: Bpmn.Gateway.Exclusive.Event.tokenIn(elem, process, context)
-  def execute({:bpmn_gateway_parallel, _}       = elem, process, context), do: Bpmn.Gateway.Parallel.tokenIn(elem, process, context)
-  def execute({:bpmn_gateway_inclusive, _}      = elem, process, context), do: Bpmn.Gateway.Inclusive.tokenIn(elem, process, context)
-  def execute({:bpmn_gateway_complex, _}        = elem, process, context), do: Bpmn.Gateway.Complex.tokenIn(elem, process, context)
-  def execute({:bpmn_sequence_flow, _}          = elem, process, context), do: Bpmn.SequenceFlow.tokenIn(elem, process, context)
+  def execute({:bpmn_gateway_exclusive, _}      = elem, context), do: Bpmn.Gateway.Exclusive.tokenIn(elem, context)
+  def execute({:bpmn_gateway_exclusive_event, _} = elem, context), do: Bpmn.Gateway.Exclusive.Event.tokenIn(elem, context)
+  def execute({:bpmn_gateway_parallel, _}       = elem, context), do: Bpmn.Gateway.Parallel.tokenIn(elem, context)
+  def execute({:bpmn_gateway_inclusive, _}      = elem, context), do: Bpmn.Gateway.Inclusive.tokenIn(elem, context)
+  def execute({:bpmn_gateway_complex, _}        = elem, context), do: Bpmn.Gateway.Complex.tokenIn(elem, context)
+  def execute({:bpmn_sequence_flow, _}          = elem, context), do: Bpmn.SequenceFlow.tokenIn(elem, context)
 
   def execute(elem, _, _) do
     IO.inspect(elem)
     nil
   end
+
+  defp reduce_result({:ok, {:ok, _} = result}, {:ok, _}), do: result
+  defp reduce_result({:ok, {:error, _} = result}, {:ok, _}), do: result
+  defp reduce_result({:ok, {:error, _}}, {:error, _} = acc), do: acc
+  defp reduce_result({:ok, {:fatal, _} = result}, _), do: result
+  defp reduce_result({:ok, {:not_implemented} = result}, _), do: result
+  defp reduce_result({:ok, {:manual, _} = result}, {:ok, _}), do: result
+  defp reduce_result({:ok, {:manual, _}}, acc), do: acc
 end

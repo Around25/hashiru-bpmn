@@ -1,8 +1,8 @@
-defmodule Bpmn.Engine.ContextTest do
+defmodule Bpmn.ContextTest do
   use ExUnit.Case, async: true
-  alias Bpmn.Engine.Context
+  alias Bpmn.Context
 
-  doctest Bpmn.Engine.Context
+  doctest Bpmn.Context
 
   setup do
     {:ok, context} = Context.start_link(%{id: "my_process"}, %{"username": "test", "password": "secret"})

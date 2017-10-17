@@ -1,4 +1,4 @@
-defmodule Bpmn.Engine.Context do
+defmodule Bpmn.Context do
   @moduledoc """
   Bpmn.Engine.Context
   ===================

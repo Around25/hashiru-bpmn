@@ -37,7 +37,8 @@ defmodule Bpmn.Mixfile do
   # Type "mix help compile.app" for more information
   def application do
     # Specify extra applications you'll use from Erlang/Elixir
-    [extra_applications: [:logger]]
+    [extra_applications: [:logger],
+     mod: {Bpmn.Application, []}]
   end
 
   # Dependencies can be Hex packages:
@@ -52,7 +53,8 @@ defmodule Bpmn.Mixfile do
   defp deps do
     [
       {:credo, "~> 0.8.8", only: [:dev, :test], runtime: false},
-      {:ex_doc, "~> 0.16", only: [:dev, :test], runtime: false}
+      {:ex_doc, "~> 0.16", only: [:dev, :test], runtime: false},
+   {:poison, "~> 3.1"}
     ]
   end
 

@@ -6,34 +6,34 @@ defmodule Bpmn.Event.Start do
 
   A BPMN start event can have the following BPMN contents:
 
-      <bpmn:startEvent id="StartEvent_1" name="START" camunda:initiator="HTTP">
-        <bpmn:outgoing>SequenceFlow_0u2ggjm</bpmn:outgoing>
+    <bpmn:startEvent id="StartEvent_1" name="START" camunda:initiator="HTTP">
+      <bpmn:outgoing>SequenceFlow_0u2ggjm</bpmn:outgoing>
 
-        <bpmn:extensionElements>
-          <camunda:formData>
-            <camunda:formField id="username" label="Username" type="string">
-              <camunda:validation>
-                <camunda:constraint name="username" config="required" />
-                <camunda:constraint name="password" config="required" />
-              </camunda:validation>
-            </camunda:formField>
-            <camunda:formField id="password" label="Password" type="string" />
-          </camunda:formData>
-          <camunda:executionListener class="bpmn.event.start.listener" event="start" />
-        </bpmn:extensionElements>
-      </bpmn:startEvent>
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="username" label="Username" type="string">
+            <camunda:validation>
+              <camunda:constraint name="username" config="required" />
+              <camunda:constraint name="password" config="required" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="password" label="Password" type="string" />
+        </camunda:formData>
+        <camunda:executionListener class="bpmn.event.start.listener" event="start" />
+      </bpmn:extensionElements>
+    </bpmn:startEvent>
 
   This node can be represented as the following Elixir token:
 
-      {:bpmn_event_start,
-        %{
-          id: "StartEvent_1",
-          name: "START",
-          outgoing: ["SequenceFlow_0u2ggjm"],
-          inputs: [%{"username"=>"user", "password"=>"password"}],
-          definitions: [{:error_event_definition, %{}}]
-        }
+    {:bpmn_event_start,
+      %{
+        id: "StartEvent_1",
+        name: "START",
+        outgoing: ["SequenceFlow_0u2ggjm"],
+        inputs: [%{"username"=>"user", "password"=>"password"}],
+        definitions: [{:error_event_definition, %{}}]
       }
+    }
 
   ## Examples
 
@@ -47,10 +47,6 @@ defmodule Bpmn.Event.Start do
     iex> true
     true
 
-#    iex> {:ok, context} = Bpmn.Context.start_link(%{"to" => {:bpmn_activity_task_script, {}}}, %{"username" => "test", "password" => "secret"})
-#    iex> {:ok, pid} = Bpmn.Event.Start.tokenIn({:bpmn_event_start, %{outgoing: ["to"]}}, context)
-#    iex> context == pid
-#    true
   """
 
   @doc """

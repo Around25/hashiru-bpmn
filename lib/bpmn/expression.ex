@@ -36,7 +36,7 @@ defmodule Bpmn.Expression do
     q = "f = fn (data) ->
     #{expr}
     end"
-    { _, binding } = Code.eval_string q
+    {_, binding} = Code.eval_string q
     binding[:f].(data)
   end
 

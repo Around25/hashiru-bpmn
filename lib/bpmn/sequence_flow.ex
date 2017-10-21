@@ -20,7 +20,7 @@ defmodule Bpmn.SequenceFlow do
   @doc """
   Execute the sequence flow logic
   """
-  def execute({:bpmn_sequence_flow, {source, target, condition} }, context) do
+  def execute({:bpmn_sequence_flow, {source, target, condition}}, context) do
     case Bpmn.Expression.execute(condition, context) do
       {:ok, true} -> execute({:bpmn_sequence_flow, {source, target}}, context)
       {:ok, false} -> {:false}

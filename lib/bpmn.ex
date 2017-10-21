@@ -106,7 +106,7 @@ defmodule Bpmn do
   def execute({:bpmn_sequence_flow, _}          = elem, context), do: Bpmn.SequenceFlow.tokenIn(elem, context)
 
   def execute(elem, _, _) do
-    IO.inspect(elem)
+    # IO.inspect(elem)
     nil
   end
 

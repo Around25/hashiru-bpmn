@@ -1,13 +1,35 @@
 defmodule Bpmn.Mixfile do
   use Mix.Project
 
+  @version "0.1.0-dev"
+
   def project do
-    [app: :bpmn,
-     version: "0.1.0",
-     elixir: "~> 1.4",
-     build_embedded: Mix.env == :prod,
-     start_permanent: Mix.env == :prod,
-     deps: deps()]
+    [
+      app: :bpmn,
+      version: @version,
+      elixir: "~> 1.4",
+      build_embedded: Mix.env == :prod,
+      start_permanent: Mix.env == :prod,
+      package: package(),
+      deps: deps(),
+      description: "A BPMN engine for elixir",
+
+      # Docs
+      name: "Hashiru BPMN",
+      source_url: "https://github.com/around25/hashiru-bpmn",
+      homepage_url: "https://github.com/around25/hashiru-bpmn",
+      docs: docs()
+    ]
+  end
+
+  defp package do
+    [
+      name: "bpmn",
+      files: ["lib", "mix.exs", "README*", "LICENSE*"],
+      maintainers: ["Cosmin Harangus"],
+      licenses: ["Apache 2.0"],
+      links: %{"GitHub" => "https://github.com/around25/hashiru-bpmn"}
+    ]
   end
 
   # Configuration for the OTP application
@@ -28,6 +50,16 @@ defmodule Bpmn.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    []
+    [
+      {:credo, "~> 0.8.8", only: [:dev, :test], runtime: false},
+      {:ex_doc, "~> 0.16", only: [:dev, :test], runtime: false}
+    ]
+  end
+
+  defp docs do
+    [
+      main: "readme", # The main page in the docs
+      extras: ["README.md", "DEVELOPER.md", "CONTRIBUTING.md", "CODE_OF_CONDUCT.md"]
+    ]
   end
 end

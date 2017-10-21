@@ -13,7 +13,7 @@ defmodule Bpmn.Activity.Task.Script do
   @doc """
   Execute the start event business logic
   """
-  def execute({:bpmn_activity_task_script, {source, target, condition} }, context) do
+  def execute({:bpmn_activity_task_script, {source, target, condition}}, context) do
       case Bpmn.Expression.execute(condition, context) do
         {:ok, true} -> execute({:bpmn_sequence_flow, {source, target}}, context)
         {:ok, false} -> {:false}

@@ -1,5 +1,7 @@
 # Hashiru Bpmn Engine
 
+[![Join the chat at https://gitter.im/hashiru-bpmn/Lobby](https://badges.gitter.im/hashiru-bpmn/Lobby.svg)](https://gitter.im/hashiru-bpmn/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 The scope of this project is to create a bpmn2 execution engine that can scale on multiple node in an elixir cluster.
 
 [![Build Status](https://travis-ci.org/Around25/hashiru-bpmn.svg?branch=master)](https://travis-ci.org/Around25/hashiru-bpmn)

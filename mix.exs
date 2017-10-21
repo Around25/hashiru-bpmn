@@ -7,7 +7,7 @@ defmodule Bpmn.Mixfile do
     [
       app: :bpmn,
       version: @version,
-      elixir: "~> 1.4",
+      elixir: "~> 1.5",
       build_embedded: Mix.env == :prod,
       start_permanent: Mix.env == :prod,
       package: package(),

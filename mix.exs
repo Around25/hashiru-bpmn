@@ -18,6 +18,8 @@ defmodule Bpmn.Mixfile do
       name: "Hashiru BPMN",
       source_url: "https://github.com/around25/hashiru-bpmn",
       homepage_url: "https://github.com/around25/hashiru-bpmn",
+      test_coverage: [tool: ExCoveralls],
+      preferred_cli_env: [coveralls: :test],
       docs: docs()
     ]
   end
@@ -54,7 +56,8 @@ defmodule Bpmn.Mixfile do
     [
       {:credo, "~> 0.8.8", only: [:dev, :test], runtime: false},
       {:ex_doc, "~> 0.16", only: [:dev, :test], runtime: false},
-   {:poison, "~> 3.1"}
+      {:excoveralls, "~> 0.7.4", only: [:dev, :test], runtime: false},
+      {:poison, "~> 3.1"}
     ]
   end
 

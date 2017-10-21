@@ -2,7 +2,8 @@
 
 [![Build Status](https://travis-ci.org/Around25/hashiru-bpmn.svg?branch=master)](https://travis-ci.org/Around25/hashiru-bpmn)
 [![Hex Version](https://img.shields.io/hexpm/v/bpmn.svg)](https://hex.pm/packages/bpmn)
-[![Join the chat at https://gitter.im/hashiru-bpmn/Lobby](https://badges.gitter.im/hashiru-bpmn/Lobby.svg)](https://gitter.im/hashiru-bpmn/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Coverage Status](https://coveralls.io/repos/github/Around25/hashiru-bpmn/badge.svg?branch=develop)](https://coveralls.io/github/Around25/hashiru-bpmn?branch=develop)
+[![Join the chat at https://gitter.im/hashiru-bpmn/Lobby](https://badges.gitter.im/hashiru-bpmn/Lobby.svg)](https://gitter.im/hashiru-bpmn/Lobby)
 
 The scope of this project is to create a bpmn2 execution engine that can scale on multiple node in an elixir cluster.
 

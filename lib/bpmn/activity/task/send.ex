@@ -1,6 +1,10 @@
 defmodule Bpmn.Activity.Task.Send do
   @moduledoc """
   Handle passing the token through an event element.
+
+    iex> Bpmn.Activity.Task.Send.tokenIn(%{}, nil)
+    {:not_implemented}
+
   """
 
   @doc """

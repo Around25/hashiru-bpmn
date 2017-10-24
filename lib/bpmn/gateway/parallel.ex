@@ -1,6 +1,10 @@
 defmodule Bpmn.Gateway.Parallel do
   @moduledoc """
   Handle passing the token through an event element.
+
+    iex> Bpmn.Gateway.Parallel.tokenIn(%{}, nil)
+    {:not_implemented}
+
   """
 
   @doc """

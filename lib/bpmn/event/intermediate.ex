@@ -1,6 +1,10 @@
 defmodule Bpmn.Event.Intermediate do
   @moduledoc """
   Handle passing the token through an event element.
+
+    iex> Bpmn.Event.Intermediate.tokenIn(%{}, nil)
+    {:not_implemented}
+
   """
 
   @doc """

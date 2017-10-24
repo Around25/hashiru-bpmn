@@ -7,7 +7,7 @@ defmodule Bpmn.Mixfile do
     [
       app: :bpmn,
       version: @version,
-      elixir: "~> 1.4",
+      elixir: "~> 1.5",
       build_embedded: Mix.env == :prod,
       start_permanent: Mix.env == :prod,
       package: package(),
@@ -18,6 +18,8 @@ defmodule Bpmn.Mixfile do
       name: "Hashiru BPMN",
       source_url: "https://github.com/around25/hashiru-bpmn",
       homepage_url: "https://github.com/around25/hashiru-bpmn",
+      test_coverage: [tool: ExCoveralls],
+      preferred_cli_env: [coveralls: :test],
       docs: docs()
     ]
   end
@@ -37,7 +39,8 @@ defmodule Bpmn.Mixfile do
   # Type "mix help compile.app" for more information
   def application do
     # Specify extra applications you'll use from Erlang/Elixir
-    [extra_applications: [:logger]]
+    [extra_applications: [:logger],
+     mod: {Bpmn.Application, []}]
   end
 
   # Dependencies can be Hex packages:
@@ -52,7 +55,9 @@ defmodule Bpmn.Mixfile do
   defp deps do
     [
       {:credo, "~> 0.8.8", only: [:dev, :test], runtime: false},
-      {:ex_doc, "~> 0.16", only: [:dev, :test], runtime: false}
+      {:ex_doc, "~> 0.16", only: [:dev, :test], runtime: false},
+      {:excoveralls, "~> 0.7.4", only: [:dev, :test], runtime: false},
+      {:poison, "~> 3.1"}
     ]
   end
 

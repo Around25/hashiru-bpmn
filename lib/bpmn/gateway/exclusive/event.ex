@@ -1,6 +1,10 @@
 defmodule Bpmn.Gateway.Exclusive.Event do
   @moduledoc """
   Handle passing the token through an event element.
+
+    iex> Bpmn.Gateway.Exclusive.Event.tokenIn(%{}, nil)
+    {:not_implemented}
+
   """
 
   @doc """

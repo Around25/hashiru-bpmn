@@ -1,6 +1,10 @@
 defmodule Bpmn.Activity.Task.User do
   @moduledoc """
   Handle passing the token through an event element.
+
+    iex> Bpmn.Activity.Task.User.tokenIn(%{}, nil)
+    {:not_implemented}
+
   """
 
   @doc """

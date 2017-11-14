@@ -3,11 +3,11 @@ defmodule Bpmn.SequenceFlow do
   Handle passing the token through a sequence flow element.
 
     iex> {:ok, context} = Bpmn.Context.start_link(%{"to" => {:bpmn_activity_task_script, {}}}, %{"username" => "test", "password" => "secret"})
-    iex> Bpmn.SequenceFlow.execute({:bpmn_sequence_flow, {"from", "to"}}, context)
+    iex> Bpmn.SequenceFlow.tokenIn({:bpmn_sequence_flow, {"from", "to"}}, context)
     {:not_implemented}
 
     iex> {:ok, context} = Bpmn.Context.start_link(%{"to" => {:bpmn_activity_task_script, {}}}, %{"username" => "test", "password" => "secret"})
-    iex> Bpmn.SequenceFlow.execute({:bpmn_sequence_flow, {"from", "to", {:bpmn_expression, {"elixir", "1!=1"}}}}, context)
+    iex> Bpmn.SequenceFlow.tokenIn({:bpmn_sequence_flow, {"from", "to", {:bpmn_expression, {"elixir", "1!=1"}}}}, context)
     {:false}
   """
 

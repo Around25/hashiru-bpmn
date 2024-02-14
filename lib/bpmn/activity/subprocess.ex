@@ -1,6 +1,10 @@
 defmodule Bpmn.Activity.Subprocess do
   @moduledoc """
   Handle passing the token through an event element.
+
+    iex> Bpmn.Activity.Subprocess.tokenIn(%{}, nil)
+    {:not_implemented}
+
   """
 
   @doc """

@@ -87,7 +87,7 @@ To run tests:
 ```shell
 # Run all hashiru-bpmn tests
 $ mix credo
-$ mix test
+$ mix coveralls
 ```
 
 You should execute the test suites before submitting a PR to github.

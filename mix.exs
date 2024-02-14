@@ -39,7 +39,7 @@ defmodule Bpmn.Mixfile do
   # Type "mix help compile.app" for more information
   def application do
     # Specify extra applications you'll use from Erlang/Elixir
-    [extra_applications: [:logger],
+    [extra_applications: [:logger, :poison, :erlsom],
      mod: {Bpmn.Application, []}]
   end
 
@@ -57,7 +57,8 @@ defmodule Bpmn.Mixfile do
       {:credo, "~> 0.8.8", only: [:dev, :test], runtime: false},
       {:ex_doc, "~> 0.16", only: [:dev, :test], runtime: false},
       {:excoveralls, "~> 0.7.4", only: [:dev, :test], runtime: false},
-      {:poison, "~> 3.1"}
+      {:poison, "~> 3.1"},
+      {:erlsom, "~> 1.4"}
     ]
   end
 

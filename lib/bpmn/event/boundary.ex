@@ -1,6 +1,10 @@
 defmodule Bpmn.Event.Boundary do
   @moduledoc """
   Handle passing the token through an event element.
+
+    iex> Bpmn.Event.Boundary.tokenIn(%{}, nil)
+    {:not_implemented}
+
   """
 
   @doc """
